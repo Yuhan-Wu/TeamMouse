@@ -55,8 +55,7 @@ class ExampleScene extends Phaser.Scene{
         //     frameRate: 10,
         //     repeat: -1
         // });
-
-        // this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.mouse, this.platforms);
     }
 
     update()

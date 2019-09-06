@@ -1,4 +1,4 @@
-class Mouse extends Phaser.GameObjects.Sprite {
+class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     //TODO change anything you want, but remeber to inform us all of new interfaces
     constructor(config) {
@@ -8,16 +8,14 @@ class Mouse extends Phaser.GameObjects.Sprite {
 
         this.alive = true;
         this.anims.play('stand');
-        this.isOnLadder=false;
         this.isClimbing=false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        this.scene.physics.add.collider(this.body,this.scene.platforms);
     }
 
     update(cursors) {
         this.isOnLadder = false;
-        this.scene.physics.overlap(this.body,this.scene.ladders,this.ladderCheck,null,this.scene);
+        this.scene.physics.overlap(this,this.scene.ladders,this.ladderCheck,null,this);
 
         if(this.isOnLadder)
         {
@@ -68,7 +66,7 @@ class Mouse extends Phaser.GameObjects.Sprite {
 
     ladderCheck()
     {
-        alert('success');
+        // alert('success');
         this.isOnLadder = true;
     }
 
