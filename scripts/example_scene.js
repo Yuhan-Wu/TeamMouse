@@ -55,12 +55,25 @@ class ExampleScene extends Phaser.Scene{
         //     frameRate: 10,
         //     repeat: -1
         // });
+		let that = this;
 
-        // this.physics.add.collider(this.player, this.platforms);
+		this.physics.add.collider(this.mouse,this.platforms, (d) =>{
+			if(that.mouse.isClimbing)
+			{
+				that.mouse.isClimbing = false;
+				that.mouse.body.allowGravity = true;
+			}
+		});
+
     }
 
     update()
     {
+		let that = this;
+		this.mouse.isOnLadder = false;
+		this.physics.overlap(this.mouse,this.ladders,(d) => {
+			that.mouse.isOnLadder = true;
+		});
         this.mouse.update(this.cursors);
     //     this.isOnLadder = false;
     //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
@@ -111,5 +124,5 @@ class ExampleScene extends Phaser.Scene{
     //         }
     //     }
     }
-
+	
 }

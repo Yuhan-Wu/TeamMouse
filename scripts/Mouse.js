@@ -12,65 +12,114 @@ class Mouse extends Phaser.GameObjects.Sprite {
         this.isClimbing=false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        this.scene.physics.add.collider(this.body,this.scene.platforms);
+		let that = this;
     }
 
     update(cursors) {
-        this.isOnLadder = false;
-        this.scene.physics.overlap(this.body,this.scene.ladders,this.ladderCheck,null,this.scene);
-
+		this.cursors = cursors;
         if(this.isOnLadder)
         {
-            if(cursors.up.isDown)
-            {
-                this.body.velocity.y=-40;
-                this.isClimbing=true;
-            }
-            else if(cursors.down.isDown)
-            {
-                this.body.velocity.y=40;
-                this.isClimbing=true;
-            }
-            else if(!cursors.down.isDown && !cursors.up.isDown)
-            {
-                this.body.gravity.y=0;
-                this.body.velocity.y=-5;
-            }
+			if(this.isClimbing)
+			{
+				this.body.velocity.x = 0;
+				this.body.allowGravity = false;
+				this.climbingMovement();
+			}
+			else
+			{
+				if(this.cursors.up.isDown)
+				{
+					this.body.velocity.y = -40;
+					this.isClimbing=true;
+					this.body.allowGravity = false;
 
+				}
+				else if(this.cursors.down.isDown)
+				{
+					this.body.velocity.y = 40;
+					this.isClimbing=true;
+					this.body.allowGravity = false;
+
+				}
+				else
+				{
+					this.normalMovement();
+				}
+			}
         }
-        else if(cursors.up.isDown && this.body.touching.down)
-        {
-            this.body.velocity.y=-200;
-        }
-
-        if(!this.isClimbing) {
-            if (cursors.left.isDown) {
-                this.lastDir = true;
-                this.body.velocity.x=-80;
-
-                this.anims.play('left', true);
-            } else if (cursors.right.isDown) {
-                this.lastDir = false;
-                this.body.velocity.x=80;
-
-                this.anims.play('right', true);
-            } else {
-                this.body.velocity.x=0;
-                if (this.lastDir == null || this.lastDir === false) {
-                    this.anims.play('leftStop');
-
-                } else {
-                    this.anims.play('rightStop');
-                }
-            }
-        }
+		else
+		{
+			this.normalMovement();
+		}
     }
+	
+	normalMovement()
+	{
+		if(this.cursors.up.isDown && this.body.touching.down)
+		{
+			this.body.velocity.y = -200;
+		}
 
-    ladderCheck()
-    {
-        alert('success');
-        this.isOnLadder = true;
-    }
+		if (this.cursors.left.isDown)
+		{
+			this.lastDir = true;
+			this.body.velocity.x = -80;
+
+			this.anims.play('left', true);
+		}
+		else if (this.cursors.right.isDown)
+		{
+			this.lastDir = false;
+			this.body.velocity.x = 80;
+
+			this.anims.play('right', true);
+		}
+		else
+		{
+			this.body.velocity.x = 0;
+			if (this.lastDir == null || this.lastDir === false)
+			{
+				this.anims.play('leftStop');
+
+			}
+			else
+			{
+				this.anims.play('rightStop');
+			}
+		}
+
+		this.isClimbing = false;
+	}
+	
+	climbingMovement()
+	{
+		if(this.cursors.up.isDown)
+		{
+			this.body.velocity.y = -40;
+			this.isClimbing=true;
+		}
+		else if(this.cursors.down.isDown)
+		{
+			this.body.velocity.y = 40;
+			this.isClimbing=true;
+		}
+		else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
+		{
+			this.body.velocity.y = 0;
+		}
+		
+		if (this.lastDir == null || this.lastDir === false)
+		{
+			this.anims.play('leftStop');
+
+		}
+		else
+		{
+			this.anims.play('rightStop');
+		}
+
+	}
+
 
     attack(weapon,enemy){
 
