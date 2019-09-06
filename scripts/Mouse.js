@@ -1,4 +1,4 @@
-class Mouse extends Phaser.GameObjects.Sprite {
+class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     //TODO change anything you want, but remeber to inform us all of new interfaces
     constructor(config) {
@@ -8,11 +8,9 @@ class Mouse extends Phaser.GameObjects.Sprite {
 
         this.alive = true;
         this.anims.play('stand');
-        this.isOnLadder=false;
         this.isClimbing=false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-		let that = this;
     }
 
     update(cursors) {
