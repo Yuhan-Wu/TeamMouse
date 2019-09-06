@@ -1,6 +1,7 @@
 let platforms;
 let player;
 let cursors;
+let lastDir;
 
 function load()
 {
@@ -59,11 +60,15 @@ function create()
 	});
 	
 	this.anims.create({
-		key: 'turn',
-		frames: [ {key: 'dude', frame: 4}],
+		key: 'leftStop',
+		frames: [ {key: 'dude', frame: 5}],
 		frameRate: 20
 	});
-	
+	this.anims.create({
+		key: 'rightStop',
+		frames: [ {key: 'dude', frame: 0}],
+		frameRate: 20
+	})
 	this.anims.create({
 		key: 'right',
 		frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
@@ -78,25 +83,34 @@ function update()
 {
 	if (cursors.left.isDown)
 	{
-		player.setVelocityX(-160);
+		lastDir = true;
+		player.setVelocityX(-80);
 
 		player.anims.play('left', true);
 	}
 	else if (cursors.right.isDown)
 	{
-		player.setVelocityX(160);
+		lastDir = false;
+		player.setVelocityX(80);
 
 		player.anims.play('right', true);
 	}
 	else
 	{
 		player.setVelocityX(0);
+		if(lastDir == null || lastDir == false)
+		{
+			player.anims.play('leftStop');
 
-		player.anims.play('turn');
+		}
+		else
+		{
+			player.anims.play('rightStop');
+		}
 	}
 
 	if (cursors.up.isDown && player.body.touching.down)
 	{
-		player.setVelocityY(-330);
+		player.setVelocityY(-200);
 	}
 }
