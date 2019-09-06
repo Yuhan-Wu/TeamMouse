@@ -26,7 +26,6 @@ class ExampleScene extends Phaser.Scene{
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
         this.player = this.physics.add.sprite(100, 510, 'dude');
-        this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -56,7 +55,14 @@ class ExampleScene extends Phaser.Scene{
             repeat: -1
         });
 
-        this.physics.add.collider(this.player, this.platforms);
+		let that = this;
+        this.physics.add.collider(this.player, this.platforms, (d) => {
+			if(that.isClimbing)
+			{
+				that.isClimbing = false;
+				that.player.body.allowGravity = true;
+			}
+		});
     }
 
     update()
@@ -66,54 +72,95 @@ class ExampleScene extends Phaser.Scene{
 
         if(this.isOnLadder)
         {
-            if(this.cursors.up.isDown)
-            {
-                this.player.setVelocityY(-40);
-                this.isClimbing=true;
-            }
-            else if(this.cursors.down.isDown)
-            {
-                this.player.setVelocityY(40);
-                this.isClimbing=true;
-            }
-            else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
-            {
-                this.player.setGravity(0);
-                this.player.setVelocityY(-5);
-            }
-
+			if(this.isClimbing)
+			{
+				this.player.setVelocityX(0);
+				this.player.body.allowGravity = false;
+				this.climbingMovement();
+			}
+			else
+			{
+				if(this.cursors.up.isDown)
+				{
+					this.player.setVelocityY(-40);
+					this.isClimbing=true;
+				}
+				else if(this.cursors.down.isDown)
+				{
+					this.player.setVelocityY(40);
+					this.isClimbing=true;
+				}
+				else
+				{
+					this.normalMovement();
+				}
+			}
         }
-        else if(this.cursors.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-200);
-        }
-
-        if(!this.isClimbing) {
-            if (this.cursors.left.isDown) {
-                this.lastDir = true;
-                this.player.setVelocityX(-80);
-
-                this.player.anims.play('left', true);
-            } else if (this.cursors.right.isDown) {
-                this.lastDir = false;
-                this.player.setVelocityX(80);
-
-                this.player.anims.play('right', true);
-            } else {
-                this.player.setVelocityX(0);
-                if (this.lastDir == null || this.lastDir === false) {
-                    this.player.anims.play('leftStop');
-
-                } else {
-                    this.player.anims.play('rightStop');
-                }
-            }
-        }
+		else
+		{
+			this.normalMovement();
+		}
     }
+	
+	normalMovement()
+	{
+		if(this.cursors.up.isDown && this.player.body.touching.down)
+		{
+			this.player.setVelocityY(-200);
+		}
+
+		if (this.cursors.left.isDown)
+		{
+			this.lastDir = true;
+			this.player.setVelocityX(-80);
+
+			this.player.anims.play('left', true);
+		}
+		else if (this.cursors.right.isDown)
+		{
+			this.lastDir = false;
+			this.player.setVelocityX(80);
+
+			this.player.anims.play('right', true);
+		}
+		else
+		{
+			this.player.setVelocityX(0);
+			if (this.lastDir == null || this.lastDir === false)
+			{
+				this.player.anims.play('leftStop');
+
+			}
+			else
+			{
+				this.player.anims.play('rightStop');
+			}
+		}
+
+		this.isClimbing = false;
+	}
+	
+	climbingMovement()
+	{
+		if(this.cursors.up.isDown)
+		{
+			this.player.setVelocityY(-40);
+			this.isClimbing=true;
+		}
+		else if(this.cursors.down.isDown)
+		{
+			this.player.setVelocityY(40);
+			this.isClimbing=true;
+		}
+		else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
+		{
+			this.player.setVelocityY(0);
+		}
+	}
 
     ladderCheck()
     {
         this.isOnLadder = true;
     }
-    
+	    
 }
