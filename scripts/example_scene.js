@@ -21,6 +21,8 @@ class ExampleScene extends Phaser.Scene{
 
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+		this.platforms.create(400, 368, 'ground');
+
 
         this.mouse=new Mouse({
             scene:this,
@@ -59,9 +61,16 @@ class ExampleScene extends Phaser.Scene{
 
 		this.physics.add.collider(this.mouse,this.platforms, (d) =>{
 			if(that.mouse.isClimbing)
-			{
-				that.mouse.isClimbing = false;
-				that.mouse.body.allowGravity = true;
+			{				
+				if(that.mouse.body.touching.up)
+				{
+					that.mouse.body.position.y -= 75;
+				}
+				else
+				{
+					that.mouse.isClimbing = false;
+					that.mouse.body.allowGravity = true;
+				}
 			}
 		});
 
