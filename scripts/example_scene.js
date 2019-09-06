@@ -115,4 +115,5 @@ class ExampleScene extends Phaser.Scene{
     {
         this.isOnLadder = true;
     }
+    
 }
