@@ -64,7 +64,11 @@ class ExampleScene extends Phaser.Scene{
 			{				
 				if(that.mouse.body.touching.up)
 				{
-					that.mouse.body.position.y -= 75;
+					do
+					{
+						that.mouse.body.position.y--;
+					}
+					while(that.physics.overlap(that.mouse, that.platforms))
 				}
 				else
 				{
