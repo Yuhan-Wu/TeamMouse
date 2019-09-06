@@ -8,6 +8,9 @@ class ExampleScene extends Phaser.Scene{
 
     create()
     {
+        //TODO after colliding with another platform, this should be set to false
+        this.isClimbing=false;
+
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
@@ -59,7 +62,6 @@ class ExampleScene extends Phaser.Scene{
     update()
     {
         this.isOnLadder = false;
-        this.isClimbing=false;
         this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
 
         if(this.isOnLadder)
