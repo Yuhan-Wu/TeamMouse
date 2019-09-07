@@ -14,9 +14,18 @@ class ExampleScene extends Phaser.Scene{
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        this.ladders.create(400, 400, 'ladder');
+        let ladd = this.ladders.create(400, 455, 'ladder');
+		ladd.displayHeight = 200;
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
+        },this);
+		
+		this.breakers = this.physics.add.group();
+		let breaker = this.breakers.create(400, 350, 'breaker');
+		breaker.displayHeight = 10;
+		breaker.displayWidth = 10;
+		Phaser.Actions.Call(this.breakers.getChildren(), (d) => {
+            d.body.allowGravity = false;
         },this);
 
         this.platforms = this.physics.add.staticGroup();
@@ -70,11 +79,8 @@ class ExampleScene extends Phaser.Scene{
 					}
 					while(that.physics.overlap(that.mouse, that.platforms))
 				}
-				else
-				{
-					that.mouse.isClimbing = false;
-					that.mouse.body.allowGravity = true;
-				}
+				that.mouse.isClimbing = false;
+				that.mouse.body.allowGravity = true;
 			}
 		});
 
@@ -86,6 +92,19 @@ class ExampleScene extends Phaser.Scene{
 		this.mouse.isOnLadder = false;
 		this.physics.overlap(this.mouse,this.ladders,(d) => {
 			that.mouse.isOnLadder = true;
+		});
+		this.physics.overlap(this.mouse,this.breakers,(d) => {
+			if(that.cursors.down.isDown)
+			{
+				that.mouse.isClimbing = true;
+				that.mouse.isOnLadder = true;
+				do
+				{
+					that.mouse.body.position.y++;
+				}
+				while(that.physics.overlap(that.mouse, that.platforms))
+				that.mouse.body.allowGravity = false;
+			}
 		});
         this.mouse.update(this.cursors);
     //     this.isOnLadder = false;

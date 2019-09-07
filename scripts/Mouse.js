@@ -9,6 +9,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         this.alive = true;
         this.anims.play('stand');
         this.isClimbing=false;
+		this.canClimbDown = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
     }
@@ -63,6 +64,10 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		if(this.cursors.up.isDown && this.body.touching.down && this.body.velocity.y == 0)
 		{
 			this.body.velocity.y = -200;
+		}
+		else if(this.cursors.down.isDown && this.body.velocity.y == 0 && this.canClimbDown)
+		{
+			console.log("mrgrgr?");
 		}
 
 		if (this.cursors.left.isDown)
