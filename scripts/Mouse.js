@@ -15,56 +15,60 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     update(cursors) {
 		this.cursors = cursors;
+		this.normalMovement();
         if(this.isOnLadder)
         {
-			if(this.isClimbing)
-			{
-				this.body.velocity.x = 0;
-				this.body.allowGravity = false;
-				this.climbingMovement();
+        	this.climbingMovement();
+        	if(this.isClimbing){
+				this.x=400;
+        		this.body.velocity.x=0;
 			}
-			else
-			{
-				if(this.body.velocity.y == 0)
-				{
-					if(this.cursors.up.isDown)
-					{
-						this.body.velocity.y = -40;
-						this.isClimbing=true;
-						this.body.allowGravity = false;
-
-					}
-					else if(this.cursors.down.isDown)
-					{
-						this.body.velocity.y = 40;
-						this.isClimbing=true;
-						this.body.allowGravity = false;
-
-					}
-					else
-					{
-						this.normalMovement();
-					}
-				}
-				else
-				{
-					this.normalMovement();
-				}
-			}
+		// 	if(this.isClimbing)
+		// 	{
+		// 		//TODO x of ladder
+		// 		this.x=400;
+		// 		this.anims.play('climb');
+		// 		this.body.velocity.x = 0;
+		// 		this.body.allowGravity = false;
+		// 		this.climbingMovement();
+		// 	}
+		// 	else
+		// 	{
+		// 		if(this.body.velocity.y == 0)
+		// 		{
+		// 			if(this.cursors.up.isDown)
+		// 			{
+		//
+		// 				this.body.velocity.y = -40;
+		// 				this.isClimbing=true;
+		// 				this.body.allowGravity = false;
+		// 			}
+		// 			else if(this.cursors.down.isDown)
+		// 			{
+		// 				this.body.velocity.y = 40;
+		// 				this.isClimbing=true;
+		// 				this.body.allowGravity = false;
+		//
+		// 			}
+		// 			else
+		// 			{
+		// 				this.normalMovement();
+		// 			}
+		// 		}
+		// 		else
+		// 		{
+		// 			this.normalMovement();
+		// 		}
+		// 	}
         }
-		else
-		{
-			this.normalMovement();
-		}
+		// else
+		// {
+		// 	this.normalMovement();
+		// }
     }
 	
 	normalMovement()
 	{
-		if(this.cursors.up.isDown && this.body.touching.down && this.body.velocity.y == 0)
-		{
-			this.body.velocity.y = -200;
-		}
-
 		if (this.cursors.left.isDown)
 		{
 			this.lastDir = true;
@@ -112,16 +116,16 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.body.velocity.y = 0;
 		}
-		
-		if (this.lastDir == null || this.lastDir === false)
-		{
-			this.anims.play('leftStop');
-
-		}
-		else
-		{
-			this.anims.play('rightStop');
-		}
+		this.anims.play('stand');
+		// if (this.lastDir == null || this.lastDir === false)
+		// {
+		// 	this.anims.play('leftStop');
+		//
+		// }
+		// else
+		// {
+		// 	this.anims.play('rightStop');
+		// }
 
 	}
 
