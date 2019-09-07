@@ -14,7 +14,9 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(cursors) {
+		this.body.allowGravity = true;
 		this.cursors = cursors;
+		
         if(this.isOnLadder)
         {
 			if(this.isClimbing)

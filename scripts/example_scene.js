@@ -14,10 +14,12 @@ class ExampleScene extends Phaser.Scene{
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        this.ladders.create(400, 400, 'ladder');
+        this.ladders.create(400, 440, 'ladder');
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
         },this);
+		
+		this.ladders.children.entries[0].displayHeight = 180;
 
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
@@ -59,24 +61,7 @@ class ExampleScene extends Phaser.Scene{
         // });
 		let that = this;
 
-		this.physics.add.collider(this.mouse,this.platforms, (d) =>{
-			if(that.mouse.isClimbing)
-			{				
-				if(that.mouse.body.touching.up)
-				{
-					do
-					{
-						that.mouse.body.position.y--;
-					}
-					while(that.physics.overlap(that.mouse, that.platforms))
-				}
-				else
-				{
-					that.mouse.isClimbing = false;
-					that.mouse.body.allowGravity = true;
-				}
-			}
-		});
+		this.physics.add.collider(this.mouse,this.platforms, (d) =>{}, this.climbCheck, this);
 
     }
 
@@ -137,5 +122,15 @@ class ExampleScene extends Phaser.Scene{
     //         }
     //     }
     }
+	
+	
+	climbCheck()
+	{
+		if(this.mouse.isClimbing)
+		{
+			return false;
+		}
+		return true;
+	}
 	
 }
