@@ -65,14 +65,31 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			}
 		}
 
-		//If we are in front of a ladder and we're not moving up or down
-		if((this.cursors.up.isDown || this.cursors.down.isDown) && this.isOnLadder && this.body.velocity.y == 0)
+		if(this.isOnLadder && this.body.velocity.y == 0)
 		{
-			this.body.position.x = this.snapTo;
-			this.body.velocity.x = 0;
-			this.isClimbing = true;
+			if(this.cursors.up.isDown)
+			{
+				//Offset the player's position, to check if we're at the top of a ladder.
+				this.body.position.y -= 2;
+				if(this.scene.physics.overlap(this.scene.mouse, this.scene.ladders))
+				{
+					this.body.position.x = this.snapTo;
+					this.body.velocity.x = 0;
+					this.isClimbing = true;
+				}
+				else
+				{
+					this.body.velocity.y = -150;
+				}
+				this.body.position.y += 2;
+			}
+			else if(this.cursors.down.isDown)
+			{
+				this.body.position.x = this.snapTo;
+				this.body.velocity.x = 0;
+				this.isClimbing = true;
+			}
 		}
-
 		//Otherwise, we can jump
 		else if(this.cursors.up.isDown && this.body.touching.down && this.body.velocity.y == 0)
 		{
