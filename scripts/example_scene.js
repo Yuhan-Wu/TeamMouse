@@ -14,24 +14,20 @@ class ExampleScene extends Phaser.Scene{
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        let ladd = this.ladders.create(400, 455, 'ladder');
-		ladd.displayHeight = 200;
+        let ladd = this.ladders.create(400, 445, 'ladder');
+		ladd.displayHeight = 181;
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
         },this);
 		
-		this.breakers = this.physics.add.group();
-		let breaker = this.breakers.create(400, 350, 'breaker');
-		breaker.displayHeight = 10;
-		breaker.displayWidth = 10;
-		Phaser.Actions.Call(this.breakers.getChildren(), (d) => {
-            d.body.allowGravity = false;
-        },this);
-
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-		this.platforms.create(400, 368, 'ground');
-
+        this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
+		let platform = this.platforms.create(283, 372, 'ground');
+		platform.displayWidth = 200;
+		platform.refreshBody();
+		platform = this.platforms.create(517, 372, 'ground');
+		platform.displayWidth = 200;
+		platform.refreshBody();
 
         this.mouse=new Mouse({
             scene:this,
@@ -68,20 +64,9 @@ class ExampleScene extends Phaser.Scene{
         // });
 		let that = this;
 
-		this.physics.add.collider(this.mouse,this.platforms, (d) =>{
-			if(that.mouse.isClimbing)
-			{				
-				if(that.mouse.body.touching.up)
-				{
-					do
-					{
-						that.mouse.body.position.y--;
-					}
-					while(that.physics.overlap(that.mouse, that.platforms))
-				}
-				that.mouse.isClimbing = false;
-				that.mouse.body.allowGravity = true;
-			}
+		this.physics.add.collider(this.mouse,this.platforms, (d) =>
+	    {
+			that.mouse.climbOff();
 		});
 
     }
@@ -89,23 +74,15 @@ class ExampleScene extends Phaser.Scene{
     update()
     {
 		let that = this;
-		this.mouse.isOnLadder = false;
-		this.physics.overlap(this.mouse,this.ladders,(d) => {
-			that.mouse.isOnLadder = true;
-		});
-		this.physics.overlap(this.mouse,this.breakers,(d) => {
-			if(that.cursors.down.isDown)
-			{
-				that.mouse.isClimbing = true;
-				that.mouse.isOnLadder = true;
-				do
-				{
-					that.mouse.body.position.y++;
-				}
-				while(that.physics.overlap(that.mouse, that.platforms))
-				that.mouse.body.allowGravity = false;
-			}
-		});
+		if(this.physics.overlap(this.mouse,this.ladders, this.mouse.saveLadderPos))
+		{
+			this.mouse.isOnLadder = true;
+		}
+		else
+		{
+			this.mouse.snapTo = null;
+			this.mouse.climbOff();
+		}
         this.mouse.update(this.cursors);
     //     this.isOnLadder = false;
     //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
