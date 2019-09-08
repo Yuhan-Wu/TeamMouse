@@ -27,7 +27,7 @@ class InitializationScene extends Phaser.Scene{
         this.load.image('ladder', '../images/ladder.png');
 		this.load.image('breaker', '../images/background.jpg');
         this.load.spritesheet('mouse', '../images/dude.png', { frameWidth: 32, frameHeight: 48 });
-        this.load.spritesheet('cat','../images/linku.png', { frameWidth: 30, frameHeight: 25 });
+        this.load.spritesheet('cat','../images/dude.png',{ frameWidth: 32, frameHeight: 48 });
     }
 
 }

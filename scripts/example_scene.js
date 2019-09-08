@@ -19,9 +19,6 @@ class ExampleScene extends Phaser.Scene{
 		
         ladd = this.ladders.create(200, 265, 'ladder');
 		ladd.displayHeight = 181;
-		
-		ladd = this.ladders.create(600, 265, 'ladder');
-		ladd.displayHeight = 181;
 
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
@@ -29,8 +26,8 @@ class ExampleScene extends Phaser.Scene{
 		
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
-		let platform = this.platforms.create(283, 360, 'ground');
-		platform.displayWidth = 200;
+		let platform = this.platforms.create(234, 360, 'ground');
+		platform.displayWidth = 300;
 		platform.displayHeight = 10;
 		platform.refreshBody();
 		
@@ -39,17 +36,15 @@ class ExampleScene extends Phaser.Scene{
 		platform.displayHeight = 10;
 		platform.refreshBody();
 		
-		platform = this.platforms.create(85, 180, 'ground');
+		platform = this.platforms.create(84, 180, 'ground');
 		platform.displayWidth = 200;
 		platform.displayHeight = 10;
 		platform.refreshBody();
 		
-		platform = this.platforms.create(716, 180, 'ground');
+		platform = this.platforms.create(317, 180, 'ground');
 		platform.displayWidth = 200;
 		platform.displayHeight = 10;
 		platform.refreshBody();
-
-
 
         this.mouse=new Mouse({
             scene:this,
@@ -58,6 +53,18 @@ class ExampleScene extends Phaser.Scene{
             y:510
         });
         this.mouse.body.collideWorldBounds=true;
+
+        //TODO create cats
+        this.cats=[];
+        let config={
+            scene:this,
+            key:'cat',
+            x:100,
+            y:100
+        };
+        let cur_cat=CatFactory.getInstance().createCat(CatType,config);
+        cur_cat.body.collideWorldBounds=true;
+        this.cats.push(cur_cat);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -91,6 +98,9 @@ class ExampleScene extends Phaser.Scene{
 			that.mouse.climbOff();
 		});
 
+		this.physics.add.collider(this.cats,this.platforms);
+
+
     }
 
     update()
@@ -108,6 +118,9 @@ class ExampleScene extends Phaser.Scene{
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
+		this.cats.forEach(function (cat) {
+           cat.update();
+        });
     //     this.isOnLadder = false;
     //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
     //
