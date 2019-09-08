@@ -101,6 +101,7 @@ class ExampleScene extends Phaser.Scene{
         this.mouse.body.collideWorldBounds=true;
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
 		let that = this;
 
 		this.physics.add.collider(this.mouse,this.platforms, (d) =>
