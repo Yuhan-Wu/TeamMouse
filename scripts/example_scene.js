@@ -7,83 +7,100 @@ class ExampleScene extends Phaser.Scene{
 
     create()
     {
-        //TODO after colliding with another platform, this should be set to false
-
-        // this.isClimbing=false;
-
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        let ladd = this.ladders.create(400, 445, 'ladder');
-		ladd.displayHeight = 181;
-		
-        ladd = this.ladders.create(200, 265, 'ladder');
-		ladd.displayHeight = 181;
-		
-		ladd = this.ladders.create(600, 265, 'ladder');
-		ladd.displayHeight = 181;
+        this.ladders.create(250, 704, 'ladder');
+		this.ladders.create(100, 604, 'ladder');
+		this.ladders.create(399, 604, 'ladder');
+		this.ladders.create(699, 704, 'ladder');
+		this.ladders.create(250, 504, 'ladder');
+		this.ladders.create(649, 504, 'ladder');
+		this.ladders.create(100, 404, 'ladder');
+		this.ladders.create(330, 404, 'ladder');
+		this.ladders.create(524, 404, 'ladder');
+		this.ladders.create(160, 304, 'ladder');
+		this.ladders.create(649, 304, 'ladder');
+		this.ladders.create(300, 204, 'ladder');
+		this.ladders.create(500, 204, 'ladder');
 
+
+
+		
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
+			ladder.displayHeight = 101;
+			ladder.displayWidth = 50;
         },this);
 		
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
-		let platform = this.platforms.create(283, 360, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
+        this.platforms.create(398, 785, 'ground').setScale(2).refreshBody();
 		
-		platform = this.platforms.create(517, 360, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
-		
-		platform = this.platforms.create(85, 180, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
-		
-		platform = this.platforms.create(716, 180, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
+		let plat = this.platforms.create(100, 660, 'ground');
+		plat.displayWidth = 250;
+		plat.displayHeight = 10;
 
+		plat = this.platforms.create(475, 660, 'ground');
+		plat.displayWidth = 400;
+		plat.displayHeight = 10;
 
+		plat = this.platforms.create(250, 560, 'ground');
+		plat.displayWidth = 250;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(550, 560, 'ground');
+		plat.displayWidth = 250;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(100, 460, 'ground');
+		plat.displayWidth = 250;
+		plat.displayHeight = 10;
+
+		plat = this.platforms.create(450, 460, 'ground');
+		plat.displayWidth = 350;
+		plat.displayHeight = 10;
+
+		plat = this.platforms.create(750, 460, 'ground');
+		plat.displayWidth = 150;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(750, 460, 'ground');
+		plat.displayWidth = 150;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(215, 360, 'ground');
+		plat.displayWidth = 180;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(428, 360, 'ground');
+		plat.displayWidth = 144;
+		plat.displayHeight = 10;
+
+		plat = this.platforms.create(613, 360, 'ground');
+		plat.displayWidth = 125;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(405, 260, 'ground');
+		plat.displayWidth = 439;
+		plat.displayHeight = 10;
+		
+		plat = this.platforms.create(400, 160, 'ground');
+		plat.displayWidth = 150;
+		plat.displayHeight = 10;
+
+		Phaser.Actions.Call(this.platforms.getChildren(), function (platform) {
+			platform.refreshBody();
+        },this);
 
         this.mouse=new Mouse({
             scene:this,
             key:'mouse',
             x:100,
-            y:510
+            y:700
         });
         this.mouse.body.collideWorldBounds=true;
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        // this.anims.create({
-        //     key: 'left',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
-        //     frameRate:10,
-        //     repeat: -1
-        // });
-        //
-        // this.anims.create({
-        //     key: 'leftStop',
-        //     frames: [ {key: 'dude', frame: 5}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'rightStop',
-        //     frames: [ {key: 'dude', frame: 0}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'right',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
-        //     frameRate: 10,
-        //     repeat: -1
-        // });
 		let that = this;
 
 		this.physics.add.collider(this.mouse,this.platforms, (d) =>
@@ -108,54 +125,6 @@ class ExampleScene extends Phaser.Scene{
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
-    //     this.isOnLadder = false;
-    //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
-    //
-    //     if(this.isOnLadder)
-    //     {
-    //         if(this.cursors.up.isDown)
-    //         {
-    //             this.player.setVelocityY(-40);
-    //             this.isClimbing=true;
-    //         }
-    //         else if(this.cursors.down.isDown)
-    //         {
-    //             this.player.setVelocityY(40);
-    //             this.isClimbing=true;
-    //         }
-    //         else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
-    //         {
-    //             this.player.setGravity(0);
-    //             this.player.setVelocityY(-5);
-    //         }
-    //
-    //     }
-    //     else if(this.cursors.up.isDown && this.player.body.touching.down)
-    //     {
-    //         this.player.setVelocityY(-200);
-    //     }
-    //
-    //     if(!this.isClimbing) {
-    //         if (this.cursors.left.isDown) {
-    //             this.lastDir = true;
-    //             this.player.setVelocityX(-80);
-    //
-    //             this.player.anims.play('left', true);
-    //         } else if (this.cursors.right.isDown) {
-    //             this.lastDir = false;
-    //             this.player.setVelocityX(80);
-    //
-    //             this.player.anims.play('right', true);
-    //         } else {
-    //             this.player.setVelocityX(0);
-    //             if (this.lastDir == null || this.lastDir === false) {
-    //                 this.player.anims.play('leftStop');
-    //
-    //             } else {
-    //                 this.player.anims.play('rightStop');
-    //             }
-    //         }
-    //     }
     }
 	
 }
