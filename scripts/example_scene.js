@@ -14,17 +14,20 @@ class ExampleScene extends Phaser.Scene{
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        this.ladders.create(400, 509, 'ladder');
+        let ladd = this.ladders.create(400, 445, 'ladder');
+		ladd.displayHeight = 181;
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
         },this);
-
-        this.grounds=this.physics.add.staticGroup();
-        this.grounds.create(400, 568, 'ground').setScale(2).refreshBody();
-
+		
         this.platforms = this.physics.add.staticGroup();
-		this.platforms.create(625, 435, 'ground');
-		this.platforms.create(175,435,'ground');
+        this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
+		let platform = this.platforms.create(283, 372, 'ground');
+		platform.displayWidth = 200;
+		platform.refreshBody();
+		platform = this.platforms.create(517, 372, 'ground');
+		platform.displayWidth = 200;
+		platform.refreshBody();
 
         this.mouse=new Mouse({
             scene:this,
@@ -38,32 +41,27 @@ class ExampleScene extends Phaser.Scene{
 
 		let that = this;
 
-		this.physics.add.collider(this.mouse,this.grounds);
-		// this.physics.add.collider(this.mouse,this.platforms, () =>{
-		// 	if(that.mouse.isClimbing)
-		// 	{
-			    // that.mouse.body.x=400;
-				// if(that.mouse.body.touching.up)
-				// {
-				// 	that.mouse.body.position.y -= 75;
-				// }
-				// else
-				// {
-				// 	that.mouse.isClimbing = false;
-				// 	that.mouse.body.allowGravity = true;
-				// }
-			// }
-		// });
+		this.physics.add.collider(this.mouse,this.platforms, (d) =>
+	    {
+			that.mouse.climbOff();
+		});
 
     }
 
     update()
     {
 		let that = this;
-		this.mouse.isOnLadder = false;
-		this.physics.overlap(this.mouse,this.ladders,(d) => {
-			that.mouse.isOnLadder = true;
-		});
+		if(this.physics.overlap(this.mouse,this.ladders, this.mouse.saveLadderPos))
+		{
+			this.mouse.isOnLadder = true;
+		}
+		else
+		{
+			this.mouse.isOnLadder = false;
+
+			this.mouse.snapTo = null;
+			this.mouse.climbOff();
+		}
         this.mouse.update(this.cursors);
     }
 	
