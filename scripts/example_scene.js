@@ -80,6 +80,8 @@ class ExampleScene extends Phaser.Scene{
 		}
 		else
 		{
+			this.mouse.isOnLadder = false;
+
 			this.mouse.snapTo = null;
 			this.mouse.climbOff();
 		}

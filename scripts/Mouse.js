@@ -66,7 +66,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//If we are in front of a ladder and we're not moving up or down
 		if((this.cursors.up.isDown || this.cursors.down.isDown) && this.isOnLadder && this.body.velocity.y == 0)
 		{
-			this.body.position.x = this.snapTo
+			this.body.position.x = this.snapTo;
+			this.body.velocity.x = 0;
 			this.isClimbing = true;
 		}
 
