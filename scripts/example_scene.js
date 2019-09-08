@@ -16,18 +16,40 @@ class ExampleScene extends Phaser.Scene{
         this.ladders = this.physics.add.group();
         let ladd = this.ladders.create(400, 445, 'ladder');
 		ladd.displayHeight = 181;
+		
+        ladd = this.ladders.create(200, 265, 'ladder');
+		ladd.displayHeight = 181;
+		
+		ladd = this.ladders.create(600, 265, 'ladder');
+		ladd.displayHeight = 181;
+
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
         },this);
 		
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
-		let platform = this.platforms.create(283, 372, 'ground');
+		let platform = this.platforms.create(283, 360, 'ground');
 		platform.displayWidth = 200;
+		platform.displayHeight = 10;
 		platform.refreshBody();
-		platform = this.platforms.create(517, 372, 'ground');
+		
+		platform = this.platforms.create(517, 360, 'ground');
 		platform.displayWidth = 200;
+		platform.displayHeight = 10;
 		platform.refreshBody();
+		
+		platform = this.platforms.create(85, 180, 'ground');
+		platform.displayWidth = 200;
+		platform.displayHeight = 10;
+		platform.refreshBody();
+		
+		platform = this.platforms.create(716, 180, 'ground');
+		platform.displayWidth = 200;
+		platform.displayHeight = 10;
+		platform.refreshBody();
+
+
 
         this.mouse=new Mouse({
             scene:this,
