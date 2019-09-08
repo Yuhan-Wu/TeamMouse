@@ -95,7 +95,6 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			this.body.velocity.y = 0;
 		}
 
-
 		if (this.lastDir == null || this.lastDir === false)
 		{
 			this.anims.play('leftStop');
