@@ -1,9 +1,16 @@
 class ExampleScene extends Phaser.Scene{
-    constructor(test) {
-        super({
-            key: 'ExampleScene'
-        });
-    }
+    constructor(config) {
+        super({key: 'ExampleScene'});
+
+
+	}
+
+	preload()
+	{
+		this.scene.launch('GameUI');
+		this.uiOverlay = this.scene.get('GameUI');
+
+	}
 
     create()
     {
@@ -85,6 +92,7 @@ class ExampleScene extends Phaser.Scene{
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
+		this.uiOverlay.updateMouseLives(this.mouse.lives);
     }
 	
 }

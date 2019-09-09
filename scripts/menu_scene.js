@@ -16,6 +16,7 @@ class MenuScene extends Phaser.Scene{
         //Sets BG to black
         this.cameras.main.setBackgroundColor('#000000');
 
+        //Style for red centered text on screen
         var styleRedCenter = {
             fontFamily: 'ArcadeClassic',
             fill: 'Red',
@@ -25,6 +26,7 @@ class MenuScene extends Phaser.Scene{
 
         }
 
+        //Style for blue centered text on screen
         var styleBlueCenter = {
             fontFamily: 'ArcadeClassic',
             fill: 'DeepSkyBlue',
@@ -34,12 +36,14 @@ class MenuScene extends Phaser.Scene{
 
         }
 
+        //Style  for blue left-justified text on screen
         var styleBlueLeft = {
             fontFamily: 'ArcadeClassic',
             fill: 'DeepSkyBlue',
             fontSize: 'xx-large',
         }
 
+        //Adds menu text to the screen
         this.add.text(0, 0, '1UP', styleRedCenter);
         this.add.text(300, 0, 'HIGH SCORE', styleRedCenter);
         this.add.text(200, 115, 'PRESS  ENTER  TO  START', styleBlueCenter);
@@ -48,7 +52,9 @@ class MenuScene extends Phaser.Scene{
         this.add.text(200, 200, '1      ' + 0, styleBlueCenter);
 
 
-        this.input.keyboard.on('keydown-ENTER', () => this.scene.start('InitializationScene'));
+        this.input.keyboard.on('keydown-ENTER', () => {
+            this.scene.start('InitializationScene');
+        });
     }
 
     /*
