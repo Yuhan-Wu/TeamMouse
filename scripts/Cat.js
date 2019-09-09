@@ -15,4 +15,9 @@ class Cat extends Phaser.Physics.Arcade.Sprite{
     update(){
 
     }
+
+    isClimbingDown(){
+
+    }
+
 }

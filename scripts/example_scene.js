@@ -100,6 +100,13 @@ class ExampleScene extends Phaser.Scene{
 
 		this.physics.add.collider(this.cats,this.platforms);
 
+		//TODO: whether climb down the ladder
+		this.physics.overlap(this.cats,this.ladders,(cat,ladder)=>{
+		    cat.isClimbingDown();
+        });
+		//TODO: kill mouse
+		this.physics.overlap(this.cats,this.mouse);
+
 
     }
 
@@ -121,6 +128,7 @@ class ExampleScene extends Phaser.Scene{
 		this.cats.forEach(function (cat) {
            cat.update();
         });
+
     //     this.isOnLadder = false;
     //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
     //
