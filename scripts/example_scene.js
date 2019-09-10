@@ -74,15 +74,6 @@ class ExampleScene extends Phaser.Scene{
             this.levelMus.setMute(this.musicMute);
         });
 
-
-
-        //TODO after colliding with another platform, this should be set to false
-        // this.isClimbing=false;
-
-        // this.add.image(400, 300, 'background');
-        //this.add.image(400, 300, 'background');
-		//this.input.keyboard.on('keydown-H', ()=> {this.highScore += 45;});
-
         this.ladders = this.physics.add.group();
         this.platforms = this.physics.add.staticGroup();
 
@@ -137,47 +128,15 @@ class ExampleScene extends Phaser.Scene{
 
         this.cats=[];
 
-        // let cur_cat=CatFactory.getInstance().createCat(CatType,config);
-        // cur_cat.body.collideWorldBounds=true;
-        // this.cats.push(cur_cat);
-
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        //TODO: Do we need all this commented code?
-        //
-        // this.anims.create({
-        //     key: 'left',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
-        //     frameRate:10,
-        //     repeat: -1
-        // });
-        //
-        // this.anims.create({
-        //     key: 'leftStop',
-        //     frames: [ {key: 'dude', frame: 5}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'rightStop',
-        //     frames: [ {key: 'dude', frame: 0}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'right',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
-        //     frameRate: 10,
-        //     repeat: -1
-        // });
 
 		let that = this;
 
 		this.physics.add.collider(this.mouse,this.platforms, (mouse,platform) =>
 	    {
+			mouse.hangOut();
 			mouse.climbOff();
 			mouse.currentStory=platform.story;
-			// if(mouse.currentStory==1){
-			//     alert(1);
-            // }
 		});
 
 		this.physics.add.collider(this.mouse,this.catSematary);

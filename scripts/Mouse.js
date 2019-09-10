@@ -14,6 +14,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         this.isClimbing = false;
 		this.lastPosition = 0;
 		this.snapTo = null;
+		this.isCeiling = false;
 		
 		this.originalWidth = 50;
 		this.body.setSize(this.originalWidth + 2, this.body.height);
@@ -25,17 +26,20 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         this.lives=3;
     }
 
-    update(cursors) {
-
-    	//Turn on to test game over
-		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
-		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
-		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
-        
-    }
-
     update() {
         this.checkLadderStatus();
+		
+		//TODO REMOVE THIS
+		if(this.cursors.down.isDown && this.body.allowGravity == false && !this.isClimbing)
+		{
+			this.body.allowGravity = true;
+			this.isCeiling = false;
+		}
+		
+		if(this.isCeiling)
+		{
+			return;
+		}
                 
 		if(!this.isClimbing)
 		{
@@ -48,6 +52,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		}
     }
 	
+	///MOVEMENT CODE///
 	normalMovement()
 	{
 		this.body.allowGravity = true;        
@@ -68,15 +73,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		else
 		{
 			this.body.velocity.x = 0;
-			if (this.lastDir == null || this.lastDir === false)
-			{
-				this.anims.play('rightStop');
-
-			}
-			else
-			{
-				this.anims.play('leftStop');
-			}
+			this.resetSprite();
 		}
 
 		if(this.isOnLadder && this.body.velocity.y == 0)
@@ -93,7 +90,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 				}
 				else
 				{
-					this.body.velocity.y = -150;
+					this.body.velocity.y = -300;
 				}
 				this.body.position.y += 2;
 			}
@@ -107,7 +104,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//Otherwise, we can jump
 		else if(this.cursors.up.isDown && this.body.touching.down && this.body.velocity.y == 0)
 		{
-			this.body.velocity.y = -150;
+			this.body.velocity.y = -300;
 		}
         
 	}
@@ -129,17 +126,10 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			this.body.velocity.y = 0;
 		}
 
-		if (this.lastDir == null || this.lastDir === false)
-		{
-			this.anims.play('leftStop');
-
-        }
-        else
-        {
-            this.anims.play('leftStop');
-        }
+		this.resetSprite();
 	}
 
+	///MAIN MOUSE FUNCTIONS///
     attack(weapon,enemy){
 
     }
@@ -165,6 +155,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		alert("YOU DIE");
     }
 	
+	///MOVEMENT HELPER FUNCTIONS///
 	climbOff()
 	{
 		this.isClimbing = false;
@@ -189,9 +180,30 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
             this.climbOff();
 		}
     }
-    
-    saveWindowPos(object1, object2)
-    {
-        object1.snapTo = object2.body.position.x;
-    }    
+	
+	hangOut()
+	{
+		if(this.body.touching.up)
+		{
+			this.resetSprite();
+			this.body.velocity.x = 0;
+			this.isCeiling = true;
+			this.body.allowGravity = false;
+		}
+	}
+	
+	///ETC HELPER FUNCTIONS///
+	resetSprite()
+	{
+		if (this.lastDir == null || this.lastDir === false)
+		{
+			this.anims.play('rightStop');
+
+		}
+		else
+		{
+			this.anims.play('leftStop');
+		}
+	}
+
 }
