@@ -31,10 +31,12 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
 		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
 		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
+        
+    }
 
-
-
-		this.cursors = cursors;
+    update() {
+        this.checkLadderStatus();
+                
 		if(!this.isClimbing)
 		{
 			this.normalMovement();
@@ -48,8 +50,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 	
 	normalMovement()
 	{
-		this.body.allowGravity = true;
-		if (this.cursors.left.isDown)
+		this.body.allowGravity = true;        
+        if (this.cursors.left.isDown)
 		{
 			this.lastDir = true;
 			this.body.velocity.x = -80;
@@ -68,12 +70,12 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			this.body.velocity.x = 0;
 			if (this.lastDir == null || this.lastDir === false)
 			{
-				this.anims.play('leftStop');
+				this.anims.play('rightStop');
 
 			}
 			else
 			{
-				this.anims.play('rightStop');
+				this.anims.play('leftStop');
 			}
 		}
 
@@ -107,6 +109,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.body.velocity.y = -150;
 		}
+        
 	}
 	
 	climbingMovement()
@@ -130,11 +133,11 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.anims.play('leftStop');
 
-		}
-		else
-		{
-			this.anims.play('rightStop');
-		}
+        }
+        else
+        {
+            this.anims.play('leftStop');
+        }
 	}
 
     attack(weapon,enemy){
@@ -172,4 +175,23 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 	{
 		object1.snapTo = object2.body.position.x;
 	}
+    
+    checkLadderStatus()
+    {
+        if(this.scene.physics.overlap(this.scene.mouse,this.scene.ladders, this.saveLadderPos))
+		{
+			this.isOnLadder = true;
+		}
+		else
+		{
+            this.isOnLadder = false;
+            this.snapTo = null;
+            this.climbOff();
+		}
+    }
+    
+    saveWindowPos(object1, object2)
+    {
+        object1.snapTo = object2.body.position.x;
+    }    
 }
