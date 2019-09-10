@@ -1,7 +1,7 @@
-class StupidCat extends Cat{
-    constructor(config,isMuggle){
+class MahoCat extends Cat{
+    constructor(config){
         super(config);
-        this.isMuggle=true;
+        this.henShinShiMaShiTaKa=false;
     }
 
     move(){
@@ -15,10 +15,7 @@ class StupidCat extends Cat{
     }
 
     climb(){
-        //stupid cat can only climb down (because it's stupid)
-        this.body.position.x=this.ladder.body.position.x;
-        this.body.setSize(this.originalWidth, this.body.height);
-        this.body.velocity.y = 40;
+
     }
 
     catAlgorithm(mouse){

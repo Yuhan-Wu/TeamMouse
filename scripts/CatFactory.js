@@ -1,6 +1,6 @@
 var CatFactory=(function () {
     var factory;
-    var stupid_max=5;
+    var stupid_max=10;
     var stupid_total=0;
     function init() {
         return {

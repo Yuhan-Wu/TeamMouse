@@ -9,7 +9,8 @@ class ExampleScene extends Phaser.Scene{
             key:'stupid_cat',
             x:400,
             y:10,
-            originalStory:6
+            originalStory:6,
+            isMuggle:true
         };
         this.cat_factory=CatFactory.getInstance();
         this.ladder_configuration={
