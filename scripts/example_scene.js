@@ -54,6 +54,7 @@ class ExampleScene extends Phaser.Scene{
 
         // this.add.image(400, 300, 'background');
         //this.add.image(400, 300, 'background');
+		//this.input.keyboard.on('keydown-H', ()=> {this.highScore += 45;});
 
         this.ladders = this.physics.add.group();
         this.platforms = this.physics.add.staticGroup();

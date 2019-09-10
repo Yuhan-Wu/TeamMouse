@@ -44,7 +44,7 @@ class GameUI extends Phaser.Scene{
 
         this.add.text(0, 0, '1UP', styleRedCenter);
         this.add.text(300, 0, 'HIGH SCORE', styleRedCenter);
-        this.livesScore = this.add.text(0, 30, ''+ 0, styleWhiteCenter);
+        this.currentScore = this.add.text(0, 30, ''+ 0, styleWhiteCenter);
         this.highScoreText = this.add.text(300, 30, "", styleWhiteCenter);
 
     }
@@ -80,15 +80,53 @@ class GameUI extends Phaser.Scene{
             this.life2.setVisible(false);
             this.life3.setVisible(false);
         }
-        //this.livesText.setText('LIVES: ' + mouseLives);
     }
 
     updateHighScore(score)
     {
-        this.highScoreText.setText(score);
+        this.currentScore.setText(score);
+
+        if (storageAvailable('localStorage'))
+        {
+            if (score > localStorage.getItem('HighScore'))
+                localStorage.setItem('HighScore', score);
+
+            this.highScoreText.setText(localStorage.getItem('HighScore'));
+        }
+        else
+        {
+            this.highScoreText.setText(score);
+        }
+
     }
 
 
 
 
+
+}
+
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+                // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
 }
