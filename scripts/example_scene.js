@@ -9,12 +9,12 @@ class ExampleScene extends Phaser.Scene{
 	{
 		this.scene.launch('GameUI');
 		this.uiOverlay = this.scene.get('GameUI');
-
+		this.highScore = 0; //TODO: Add to high score whenever you jump over a cat (For Tuesday)
 	}
 
     create()
     {
-        this.add.image(400, 300, 'background');
+        //this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
         this.ladders.create(250, 704, 'ladder');
@@ -67,14 +67,10 @@ class ExampleScene extends Phaser.Scene{
 		plat.displayWidth = 350;
 		plat.displayHeight = 10;
 
-		plat = this.platforms.create(750, 460, 'ground');
+		plat = this.platforms.create(750, 560, 'ground');
 		plat.displayWidth = 150;
 		plat.displayHeight = 10;
-		
-		plat = this.platforms.create(750, 460, 'ground');
-		plat.displayWidth = 150;
-		plat.displayHeight = 10;
-		
+				
 		plat = this.platforms.create(215, 360, 'ground');
 		plat.displayWidth = 180;
 		plat.displayHeight = 10;
@@ -83,8 +79,8 @@ class ExampleScene extends Phaser.Scene{
 		plat.displayWidth = 144;
 		plat.displayHeight = 10;
 
-		plat = this.platforms.create(613, 360, 'ground');
-		plat.displayWidth = 125;
+		plat = this.platforms.create(675, 360, 'ground');
+		plat.displayWidth = 250;
 		plat.displayHeight = 10;
 		
 		plat = this.platforms.create(405, 260, 'ground');
@@ -128,12 +124,30 @@ class ExampleScene extends Phaser.Scene{
 		else
 		{
 			this.mouse.isOnLadder = false;
-
 			this.mouse.snapTo = null;
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
 		this.uiOverlay.updateMouseLives(this.mouse.lives);
+
+		//Lose condition
+		if (this.mouse.lives <= 0)
+		{
+			this.scene.launch('GameOverScene');
+			this.scene.pause();
+		}
+
+		//Win condition
+		var highestPlat = 160;
+		if (this.mouse.y <= highestPlat - 30)
+		{
+			//TODO: transition to the next level, play any animations
+			this.scene.launch('GameOverScene');
+			this.scene.pause();
+		}
+
+		this.uiOverlay.updateHighScore(this.highScore); //TODO: use a HighScore text class to store and update high score
     }
+
 	
 }
