@@ -91,17 +91,6 @@ class ExampleScene extends Phaser.Scene{
 		Phaser.Actions.Call(this.platforms.getChildren(), function (platform) {
 			platform.refreshBody();
         },this);
-        
-        this.windows = this.physics.add.group();
-        
-        this.windows.create(450, 700, 'window');
-        
-        Phaser.Actions.Call(this.windows.getChildren(), function (wind) {
-			wind.displayWidth = 25;
-            wind.displayHeight = 25;
-            wind.body.allowGravity = false;
-        },this);
-
 
         this.mouse=new Mouse({
             scene:this,
@@ -125,16 +114,6 @@ class ExampleScene extends Phaser.Scene{
     update()
     {
 		let that = this;
-		if(this.physics.overlap(this.mouse,this.ladders, this.mouse.saveLadderPos))
-		{
-			this.mouse.isOnLadder = true;
-		}
-		else
-		{
-			this.mouse.isOnLadder = false;
-			this.mouse.snapTo = null;
-			this.mouse.climbOff();
-		}
         this.mouse.update(this.cursors);
 		this.uiOverlay.updateMouseLives(this.mouse.lives);
 

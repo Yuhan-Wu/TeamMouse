@@ -28,37 +28,11 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
 		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
         
-        this.scene.input.keyboard.on('keydown-SPACE', () => {
-            if(this.visible && this.scene.physics.overlap(this.scene.mouse, this.scene.windows))
-            {
-                this.visible = false;
-            }
-            else if(!this.visible)
-            {
-                this.visible = true;
-            }
-        });
-
     }
 
     update() {
-		if(this.scene.physics.overlap(this.scene.mouse,this.scene.ladders, this.saveLadderPos))
-		{
-			this.isOnLadder = true;
-		}
-		else
-		{
-			this.isOnLadder = false;
-			this.snapTo = null;
-			this.climbOff();
-		}
-        
-        //Prevent player from moving if invisible.
-        if(!this.visible)
-        {
-            return;
-        }
-        
+        this.checkLadderStatus();
+                
 		if(!this.isClimbing)
 		{
 			this.normalMovement();
@@ -188,4 +162,23 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 	{
 		object1.snapTo = object2.body.position.x;
 	}
+    
+    checkLadderStatus()
+    {
+        if(this.scene.physics.overlap(this.scene.mouse,this.scene.ladders, this.saveLadderPos))
+		{
+			this.isOnLadder = true;
+		}
+		else
+		{
+            this.isOnLadder = false;
+            this.snapTo = null;
+            this.climbOff();
+		}
+    }
+    
+    saveWindowPos(object1, object2)
+    {
+        object1.snapTo = object2.body.position.x;
+    }    
 }
