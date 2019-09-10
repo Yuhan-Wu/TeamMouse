@@ -10,11 +10,13 @@ function load()
 			arcade:
 			{
 				gravity: {y:400},
-				debug: true
+				debug: false
 			}
 		},
-		scene:[InitializationScene,ExampleScene]
+		scene:[MenuScene,InitializationScene, ExampleScene, GameUI, GameOverScene],
+
+
 	};
-	
 	var game = new Phaser.Game(config);
+
 }

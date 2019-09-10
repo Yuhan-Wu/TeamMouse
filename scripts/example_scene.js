@@ -37,6 +37,18 @@ class ExampleScene extends Phaser.Scene{
             story:0
         };
     }
+    constructor(config) {
+        super({key: 'ExampleScene'});
+
+
+	}
+
+	preload()
+	{
+		this.scene.launch('GameUI');
+		this.uiOverlay = this.scene.get('GameUI');
+		this.highScore = 0; //TODO: Add to high score whenever you jump over a cat (For Tuesday)
+	}
 
     create()
     {
@@ -45,8 +57,8 @@ class ExampleScene extends Phaser.Scene{
         // this.isClimbing=false;
 
         // this.add.image(400, 300, 'background');
+        //this.add.image(400, 300, 'background');
 
-        //
         this.ladders = this.physics.add.group();
         this.platforms = this.physics.add.staticGroup();
 
@@ -104,6 +116,29 @@ class ExampleScene extends Phaser.Scene{
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        // this.anims.create({
+        //     key: 'left',
+        //     frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
+        //     frameRate:10,
+        //     repeat: -1
+        // });
+        //
+        // this.anims.create({
+        //     key: 'leftStop',
+        //     frames: [ {key: 'dude', frame: 5}],
+        //     frameRate: 20
+        // });
+        // this.anims.create({
+        //     key: 'rightStop',
+        //     frames: [ {key: 'dude', frame: 0}],
+        //     frameRate: 20
+        // });
+        // this.anims.create({
+        //     key: 'right',
+        //     frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
 		let that = this;
 
 		this.physics.add.collider(this.mouse,this.platforms, (mouse,platform) =>
@@ -205,6 +240,25 @@ class ExampleScene extends Phaser.Scene{
         this.platform_configuration.scale=scale;
         let plat=new Platform(this.platform_configuration);
         this.platforms.add(plat);
+		this.uiOverlay.updateMouseLives(this.mouse.lives);
+
+		//Lose condition
+		if (this.mouse.lives <= 0)
+		{
+			this.scene.launch('GameOverScene');
+			this.scene.pause();
+		}
+
+		//Win condition
+		var highestPlat = 160;
+		if (this.mouse.y <= highestPlat - 30)
+		{
+			//TODO: transition to the next level, play any animations
+			this.scene.launch('GameOverScene');
+			this.scene.pause();
+		}
+
+		this.uiOverlay.updateHighScore(this.highScore); //TODO: use a HighScore text class to store and update high score
     }
 	
 }
