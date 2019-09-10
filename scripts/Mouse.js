@@ -26,14 +26,28 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     update(cursors) {
 
+        this.scene.input.keyboard.on('keydown-SPACE', () => {
+            if(this.visible && this.scene.physics.overlap(this.scene.mouse, this.scene.windows))
+            {
+                this.visible = false;
+            }
+            else if(!this.visible)
+            {
+                this.visible = true;
+            }
+        });
+
     	//Turn on to test game over
 		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
 		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
 		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
-
-
-
-		this.cursors = cursors;
+        
+        //Prevent player from moving if invisible.
+        if(!this.visible)
+        {
+            return;
+        }
+        
 		if(!this.isClimbing)
 		{
 			this.normalMovement();
@@ -47,8 +61,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 	
 	normalMovement()
 	{
-		this.body.allowGravity = true;
-		if (this.cursors.left.isDown)
+		this.body.allowGravity = true;        
+        if (this.cursors.left.isDown)
 		{
 			this.lastDir = true;
 			this.body.velocity.x = -80;

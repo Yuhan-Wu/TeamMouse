@@ -30,9 +30,6 @@ class ExampleScene extends Phaser.Scene{
 		this.ladders.create(649, 304, 'ladder');
 		this.ladders.create(300, 204, 'ladder');
 		this.ladders.create(500, 204, 'ladder');
-
-
-
 		
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
@@ -94,6 +91,17 @@ class ExampleScene extends Phaser.Scene{
 		Phaser.Actions.Call(this.platforms.getChildren(), function (platform) {
 			platform.refreshBody();
         },this);
+        
+        this.windows = this.physics.add.group();
+        
+        this.windows.create(450, 700, 'window');
+        
+        Phaser.Actions.Call(this.windows.getChildren(), function (wind) {
+			wind.displayWidth = 25;
+            wind.displayHeight = 25;
+            wind.body.allowGravity = false;
+        },this);
+
 
         this.mouse=new Mouse({
             scene:this,
