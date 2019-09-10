@@ -12,6 +12,9 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         this.isClimbing = false;
 		this.lastPosition = 0;
 		this.snapTo = null;
+
+		//Mouse lives
+		this.lives = 3;
 		
 		this.body.setSize(50, 62);
 
@@ -130,11 +133,15 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     }
 
+    //Takes damage from an enemy
     hurtBy(enemy) {
+    	this.lives -= 1;
+    	if (this.lives <= 0)
+    		this.alive = false;
     }
 
+    //Probably play a death animation
     die() {
-
     }
 	
 	climbOff()
