@@ -6,6 +6,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         config.scene.physics.world.enable(this);
         config.scene.add.existing(this);
 
+        this.original_x=config.x;
+        this.original_y=config.y;
         this.alive = true;
         this.anims.play('stand');
 		this.isOnLadder = false;
@@ -17,6 +19,10 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		this.body.setSize(this.body.width + 2, this.body.height);
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
+
+        this.currentStory=0;
+        this.left=true;
+        this.health=3;
     }
 
     update(cursors) {
@@ -39,14 +45,14 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.lastDir = true;
 			this.body.velocity.x = -80;
-
+			this.left=true;
 			this.anims.play('left', true);
 		}
 		else if (this.cursors.right.isDown)
 		{
 			this.lastDir = false;
 			this.body.velocity.x = 80;
-
+			this.left=false;
 			this.anims.play('right', true);
 		}
 		else
@@ -111,10 +117,17 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
     }
 
     hurtBy(enemy) {
+    	if(this.health-1<0){
+    		this.die();
+		}else {
+    		this.health--;
+			this.body.position.x=this.original_x;
+			this.body.position.y=this.original_y;
+		}
     }
 
     die() {
-
+		alert("YOU DIE");
     }
 	
 	climbOff()

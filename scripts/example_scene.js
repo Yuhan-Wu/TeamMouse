@@ -3,6 +3,16 @@ class ExampleScene extends Phaser.Scene{
         super({
             key: 'ExampleScene'
         });
+        this.stupid_loop_count=0;
+        this.stupid_config={
+            scene:this,
+            key:'stupid_cat',
+            x:100,
+            y:100,
+            originalStory:2
+        };
+        this.cat_factory=CatFactory.getInstance();
+
     }
 
     create()
@@ -14,105 +24,175 @@ class ExampleScene extends Phaser.Scene{
         this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
-        let ladd = this.ladders.create(400, 445, 'ladder');
-		ladd.displayHeight = 181;
-		
-        ladd = this.ladders.create(200, 265, 'ladder');
-		ladd.displayHeight = 181;
+        let ladder_configuration={
+            scene:this,
+            key: 'ladder',
+            x:400,
+            y:445,
+            setScale:false,
+            setSize:true,
+            width:32,
+            height:182,
+            story:0
+        };
+        let ladd=new Ladder(ladder_configuration);
+        this.ladders.add(ladd);
 
-        Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
-            ladder.body.allowGravity = false;
-        },this);
-		
+        ladder_configuration={
+            scene:this,
+            key: 'ladder',
+            x:200,
+            y:265,
+            setScale:false,
+            setSize:true,
+            width:32,
+            height:181,
+            story:1
+        };
+        ladd=new Ladder(ladder_configuration);
+        this.ladders.add(ladd);
+
+        let sematary_config={
+            scene:this,
+            key:'cat_sematary',
+            x:700,
+            y:511
+        };
+        this.catSematary=new CatSematary(sematary_config);
+
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(398, 568, 'ground').setScale(2).refreshBody();
-		let platform = this.platforms.create(234, 360, 'ground');
-		platform.displayWidth = 300;
-		platform.displayHeight = 10;
-		platform.refreshBody();
-		
-		platform = this.platforms.create(517, 360, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
-		
-		platform = this.platforms.create(84, 180, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
-		
-		platform = this.platforms.create(317, 180, 'ground');
-		platform.displayWidth = 200;
-		platform.displayHeight = 10;
-		platform.refreshBody();
+        let platform_configuration={
+            scene:this,
+            key: 'ground',
+            x:398,
+            y:568,
+            setScale:true,
+            setSize:false,
+            scale:2,
+            story:0
+        };
+        let platform= new Platform(platform_configuration);
+        this.platforms.add(platform);
+
+        platform_configuration={
+            scene:this,
+            key: 'ground',
+            x:234,
+            y:360,
+            setScale:false,
+            setSize:true,
+            width:300,
+            height:10,
+            story:1
+        };
+        platform= new Platform(platform_configuration);
+        this.platforms.add(platform);
+
+        platform_configuration={
+            scene:this,
+            key: 'ground',
+            x:517,
+            y:360,
+            setScale:false,
+            setSize:true,
+            width:200,
+            height:10,
+            story:1
+        };
+        platform= new Platform(platform_configuration);
+        this.platforms.add(platform);
+
+        platform_configuration={
+            scene:this,
+            key: 'ground',
+            x:84,
+            y:180,
+            setScale:false,
+            setSize:true,
+            width:200,
+            height:10,
+            story:2
+        };
+        platform= new Platform(platform_configuration);
+        this.platforms.add(platform);
+
+        platform_configuration={
+            scene:this,
+            key: 'ground',
+            x:317,
+            y:180,
+            setScale:false,
+            setSize:true,
+            width:200,
+            height:10,
+            story:2
+        };
+        platform= new Platform(platform_configuration);
+        this.platforms.add(platform);
+
+        this.physics.add.collider(this.ladders,this.platforms);
 
         this.mouse=new Mouse({
             scene:this,
             key:'mouse',
-            x:100,
-            y:510
+            x:625,
+            y:400
         });
         this.mouse.body.collideWorldBounds=true;
 
         //TODO create cats
         this.cats=[];
-        let config={
-            scene:this,
-            key:'cat',
-            x:100,
-            y:100
-        };
-        let cur_cat=CatFactory.getInstance().createCat(CatType,config);
-        cur_cat.body.collideWorldBounds=true;
-        this.cats.push(cur_cat);
+
+        // let cur_cat=CatFactory.getInstance().createCat(CatType,config);
+        // cur_cat.body.collideWorldBounds=true;
+        // this.cats.push(cur_cat);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        // this.anims.create({
-        //     key: 'left',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
-        //     frameRate:10,
-        //     repeat: -1
-        // });
-        //
-        // this.anims.create({
-        //     key: 'leftStop',
-        //     frames: [ {key: 'dude', frame: 5}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'rightStop',
-        //     frames: [ {key: 'dude', frame: 0}],
-        //     frameRate: 20
-        // });
-        // this.anims.create({
-        //     key: 'right',
-        //     frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
-        //     frameRate: 10,
-        //     repeat: -1
-        // });
 		let that = this;
 
-		this.physics.add.collider(this.mouse,this.platforms, (d) =>
+		this.physics.add.collider(this.mouse,this.platforms, (mouse,platform) =>
 	    {
-			that.mouse.climbOff();
+			mouse.climbOff();
+			mouse.currentStory=platform.story;
+			// if(mouse.currentStory==1){
+			//     alert(1);
+            // }
 		});
 
-		this.physics.add.collider(this.cats,this.platforms);
-
-		//TODO: whether climb down the ladder
-		this.physics.overlap(this.cats,this.ladders,(cat,ladder)=>{
-		    cat.isClimbingDown();
+		this.physics.add.collider(this.mouse,this.catSematary);
+		this.physics.add.collider(this.cats,this.catSematary,(cat,catSematary)=>{
+		    this.enter_sematary(cat);
         });
-		//TODO: kill mouse
-		this.physics.overlap(this.cats,this.mouse);
+        this.physics.add.collider(this.cats,this.platforms,(cat,platform)=>{
+            if(cat.currentStory!=platform.story){
+                cat.left=cat.left? false: true;
+                cat.currentStory=platform.story;
+                if(cat.isClimbing){
+                    cat.climbOff();
+                }
+            }
+            cat.currentStory=platform.story;
+            cat.body.velocity.x=0;
+        });
 
-
+        //TODO: kill mouse
+        this.physics.add.overlap(this.mouse,this.cats,(mouse,cat)=>{
+            mouse.hurtBy(cat);
+        });
     }
 
     update()
     {
 		let that = this;
+		this.stupid_loop_count=(this.stupid_loop_count+1)%100;
+		if(!this.stupid_loop_count){
+		    let cur_cat=this.cat_factory.createCat(CatType.STUPID,this.stupid_config);
+		    if(cur_cat){
+		        cur_cat.body.collideWorldBounds=true;
+                this.cats.push(cur_cat);
+            }
+        }
 		if(this.physics.overlap(this.mouse,this.ladders, this.mouse.saveLadderPos))
 		{
 			this.mouse.isOnLadder = true;
@@ -125,58 +205,27 @@ class ExampleScene extends Phaser.Scene{
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
+        this.physics.overlap(this.cats,this.ladders,(cat,ladder)=>{
+            // alert(2);
+            // if(ladder.story==0){
+            //     alert(2);
+            // }
+            cat.climbOrNot(ladder);
+        });
 		this.cats.forEach(function (cat) {
            cat.update();
         });
 
-    //     this.isOnLadder = false;
-    //     this.physics.overlap(this.player,this.ladders,this.ladderCheck,null,this);
-    //
-    //     if(this.isOnLadder)
-    //     {
-    //         if(this.cursors.up.isDown)
-    //         {
-    //             this.player.setVelocityY(-40);
-    //             this.isClimbing=true;
-    //         }
-    //         else if(this.cursors.down.isDown)
-    //         {
-    //             this.player.setVelocityY(40);
-    //             this.isClimbing=true;
-    //         }
-    //         else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
-    //         {
-    //             this.player.setGravity(0);
-    //             this.player.setVelocityY(-5);
-    //         }
-    //
-    //     }
-    //     else if(this.cursors.up.isDown && this.player.body.touching.down)
-    //     {
-    //         this.player.setVelocityY(-200);
-    //     }
-    //
-    //     if(!this.isClimbing) {
-    //         if (this.cursors.left.isDown) {
-    //             this.lastDir = true;
-    //             this.player.setVelocityX(-80);
-    //
-    //             this.player.anims.play('left', true);
-    //         } else if (this.cursors.right.isDown) {
-    //             this.lastDir = false;
-    //             this.player.setVelocityX(80);
-    //
-    //             this.player.anims.play('right', true);
-    //         } else {
-    //             this.player.setVelocityX(0);
-    //             if (this.lastDir == null || this.lastDir === false) {
-    //                 this.player.anims.play('leftStop');
-    //
-    //             } else {
-    //                 this.player.anims.play('rightStop');
-    //             }
-    //         }
-    //     }
+    }
+
+    enter_sematary(cat){
+        if(cat instanceof StupidCat){
+            CatFactory.getInstance().killCat(cat);
+            var pos = this.cats.indexOf(cat);
+            this.cats.splice(pos,1);
+            cat.visible=false;
+            cat.destroy();
+        }
     }
 	
 }
