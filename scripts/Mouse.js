@@ -15,8 +15,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		this.lastPosition = 0;
 		this.snapTo = null;
 		
-		this.originalWidth = this.body.width;
-		this.body.setSize(this.body.width + 2, this.body.height);
+		this.originalWidth = 50;
+		this.body.setSize(this.originalWidth + 2, this.body.height);
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 

@@ -4,14 +4,13 @@ class Cat extends Phaser.Physics.Arcade.Sprite{
         config.scene.physics.world.enable(this);
         config.scene.add.existing(this);
 
-        this.anims.play('stand');
         this.isClimbing = false;
         this.hasMadeChoice=false;
 
-        this.originalWidth = this.body.width;
-        this.body.setSize(this.body.width + 2, this.body.height);
+        this.originalWidth = 50;
+        this.body.setSize(this.originalWidth + 2, this.body.height);
         this.currentStory=config.originalStory;
-        this.left=false;
+        this.left=true;
         this.down=true;
         this.ladder=null;
     }
