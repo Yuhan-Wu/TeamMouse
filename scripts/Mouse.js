@@ -6,24 +6,28 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         config.scene.physics.world.enable(this);
         config.scene.add.existing(this);
 
+        this.original_x=config.x;
+        this.original_y=config.y;
         this.alive = true;
         this.anims.play('stand');
 		this.isOnLadder = false;
         this.isClimbing = false;
 		this.lastPosition = 0;
 		this.snapTo = null;
-
-		//Mouse lives
-		this.lives = 3;
 		
-		this.body.setSize(50, 62);
-
-		this.originalWidth = this.body.width;
-		this.body.setSize(this.body.width + 2, this.body.height);
+		this.originalWidth = 50;
+		this.body.setSize(this.originalWidth + 2, this.body.height);
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        
-        //Turn on to test game over
+
+        this.currentStory=0;
+        this.left=true;
+        this.lives=3;
+    }
+
+    update(cursors) {
+
+    	//Turn on to test game over
 		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
 		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
 		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
@@ -51,14 +55,14 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.lastDir = true;
 			this.body.velocity.x = -80;
-
+			this.left=true;
 			this.anims.play('left', true);
 		}
 		else if (this.cursors.right.isDown)
 		{
 			this.lastDir = false;
 			this.body.velocity.x = 80;
-
+			this.left=false;
 			this.anims.play('right', true);
 		}
 		else
@@ -125,10 +129,9 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			this.body.velocity.y = 0;
 		}
 
-
-        if (this.lastDir == null || this.lastDir === false)
-        {
-            this.anims.play('rightStop');
+		if (this.lastDir == null || this.lastDir === false)
+		{
+			this.anims.play('leftStop');
 
         }
         else
@@ -143,13 +146,23 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 
     //Takes damage from an enemy
     hurtBy(enemy) {
-    	this.lives -= 1;
-    	if (this.lives <= 0)
-    		this.alive = false;
+    	if(this.lives-1<0){
+    		this.die();
+		}else {
+    		this.lives--;
+			this.body.position.x=this.original_x;
+			this.body.position.y=this.original_y;
+		}
     }
 
     //Probably play a death animation
     die() {
+		//Lose condition
+
+		this.scene.launch('GameOverScene');
+		this.scene.pause();
+        this.alive=false;
+		alert("YOU DIE");
     }
 	
 	climbOff()
