@@ -4,7 +4,7 @@ function load()
 	{
 		type: Phaser.AUTO,
 		width: 800,
-		height: 600,
+		height: 800,
 		physics:{
 			default: 'arcade',
 			arcade:
@@ -13,8 +13,8 @@ function load()
 				debug: true
 			}
 		},
-		scene:[InitializationScene,ExampleScene]
+		scene:[MenuScene,InitializationScene, ExampleScene, GameUI]
+
 	};
-	
 	var game = new Phaser.Game(config);
 }
