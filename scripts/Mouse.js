@@ -27,7 +27,11 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
     update(cursors) {
 
     	//Turn on to test game over
-		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 0;});
+		this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
+		this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
+		this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
+
+
 
 		this.cursors = cursors;
 		if(!this.isClimbing)

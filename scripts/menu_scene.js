@@ -4,6 +4,8 @@ class MenuScene extends Phaser.Scene{
         super({
             key: 'MenuScene'
         });
+
+        this.numCoins = 0;
     }
 
     preload() {
@@ -43,44 +45,57 @@ class MenuScene extends Phaser.Scene{
             fontSize: 'xx-large',
         }
 
+        var styleRedLeft = {
+            fontFamily: 'ArcadeClassic',
+            fill: 'Red',
+            fontSize: 'xx-large',
+        }
+
         //Adds menu text to the screen
         this.add.text(0, 0, '1UP', styleRedCenter);
         this.add.text(300, 0, 'HIGH SCORE', styleRedCenter);
-        this.add.text(200, 115, 'PRESS  ENTER  TO  START', styleBlueCenter);
-        this.add.text(200, 150, 'PLAYER     COIN', styleBlueCenter);
-        this.add.text(0, 350, 'RANK   SCORE   NAME', styleBlueLeft);
-        this.add.text(200, 200, '1      ' + 0, styleBlueCenter);
+
+        this.coinText = this.add.text(200, 115, 'INSERT  COIN', styleBlueCenter);
+        this.add.text(200, 225, 'PLAYER     COIN', styleBlueCenter);
+        this.add.text(0, 450, 'RANK   SCORE   NAME', styleBlueLeft);
+        this.add.text(0, 500, '1st      0', styleRedLeft);
+        this.add.text(0, 550, '2nd      0', styleRedLeft);
+        this.add.text(0, 600, '3rd      0', styleRedLeft);
+
+
+
+        this.numCoinsText = this.add.text(200, 275, '1               ' + this.numCoins, styleBlueCenter);
 
 
         this.input.keyboard.on('keydown-ENTER', () => {
-            this.scene.start('InitializationScene');
+            if (this.numCoins >= 1)
+                this.scene.start('InitializationScene');
         });
+
+        this.input.keyboard.on('keydown-C', () => {
+            this.numCoins += 1;
+        });
+
     }
 
-    /*
+
     update()
     {
-        var styleBlueCenter = {
-            fontFamily: 'ArcadeClassic',
-            fill: 'DeepSkyBlue',
-            fontSize: 'xx-large',
-            boundsAlignH: 'center',
-            boundsAlignV: 'middle',
-        }
-
-        function addCoin()
-        {
-            numCoins = numCoins + 1;
-        }
-
-
-
-
-        this.input.keyboard.on('keydown-S', addCoin);
-
+        this.changeNumCoinsText()
+        this.changeCoinText()
     }
-    */
 
+
+    changeNumCoinsText()
+    {
+        this.numCoinsText.setText('1               ' + this.numCoins);
+    }
+
+    changeCoinText()
+    {
+        if (this.numCoins > 0)
+            this.coinText.setText('PRESS  ENTER  TO  START');
+    }
 
 
 }

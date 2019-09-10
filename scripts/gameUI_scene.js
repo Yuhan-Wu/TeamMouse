@@ -6,6 +6,7 @@ class GameUI extends Phaser.Scene{
     }
 
     preload() {
+
     }
 
 
@@ -19,6 +20,11 @@ class GameUI extends Phaser.Scene{
         var uiRect = new Phaser.Geom.Rectangle(0, 0, 800, 100);
         graphics.fillStyle(0x000000, 1);
         graphics.fillRectShape(uiRect);
+
+        this.life1 = this.add.image(75, 80, 'MarioSprite');
+        this.life2 = this.add.image(100, 80, 'MarioSprite');
+        this.life3 = this.add.image(125, 80, 'MarioSprite');
+
 
         var styleRedCenter = {
             fontFamily: 'ArcadeClassic',
@@ -38,8 +44,8 @@ class GameUI extends Phaser.Scene{
 
         this.add.text(0, 0, '1UP', styleRedCenter);
         this.add.text(300, 0, 'HIGH SCORE', styleRedCenter);
-        this.livesText = this.add.text(0, 45, 'LIVES: ' + 0, styleWhiteCenter);
-        this.highScoreText = this.add.text(300, 45, "", styleWhiteCenter);
+        this.livesScore = this.add.text(0, 30, ''+ 0, styleWhiteCenter);
+        this.highScoreText = this.add.text(300, 30, "", styleWhiteCenter);
 
     }
 
@@ -50,7 +56,13 @@ class GameUI extends Phaser.Scene{
 
     updateMouseLives(mouseLives)
     {
-        this.livesText.setText('LIVES: ' + mouseLives);
+        if (mouseLives == 2)
+            this.life3.setVisible(false)
+        else if (mouseLives == 1)
+            this.life2.setVisible(false)
+        else if (mouseLives == 0)
+            this.life1.setVisible(false)
+        //this.livesText.setText('LIVES: ' + mouseLives);
     }
 
     updateHighScore(score)

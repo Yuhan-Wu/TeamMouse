@@ -14,7 +14,7 @@ class ExampleScene extends Phaser.Scene{
 
     create()
     {
-        this.add.image(400, 300, 'background');
+        //this.add.image(400, 300, 'background');
 
         this.ladders = this.physics.add.group();
         this.ladders.create(250, 704, 'ladder');
