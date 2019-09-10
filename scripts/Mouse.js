@@ -22,10 +22,12 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		this.body.setSize(this.body.width + 2, this.body.height);
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-    }
-
-    update(cursors) {
-
+        
+        //Turn on to test game over
+		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
+		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
+		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
+        
         this.scene.input.keyboard.on('keydown-SPACE', () => {
             if(this.visible && this.scene.physics.overlap(this.scene.mouse, this.scene.windows))
             {
@@ -37,10 +39,19 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
             }
         });
 
-    	//Turn on to test game over
-		//this.scene.input.keyboard.on('keydown-S', ()=> {this.lives = 2;});
-		//this.scene.input.keyboard.on('keydown-D', ()=> {this.lives = 1;});
-		//this.scene.input.keyboard.on('keydown-F', ()=> {this.lives = 0;});
+    }
+
+    update() {
+		if(this.scene.physics.overlap(this.scene.mouse,this.scene.ladders, this.saveLadderPos))
+		{
+			this.isOnLadder = true;
+		}
+		else
+		{
+			this.isOnLadder = false;
+			this.snapTo = null;
+			this.climbOff();
+		}
         
         //Prevent player from moving if invisible.
         if(!this.visible)
