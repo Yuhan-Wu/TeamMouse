@@ -15,8 +15,11 @@ class ExampleScene extends Phaser.Scene{
     create()
     {
         //this.add.image(400, 300, 'background');
+		//this.input.keyboard.on('keydown-H', ()=> {this.highScore += 45;});
 
-        this.ladders = this.physics.add.group();
+
+
+		this.ladders = this.physics.add.group();
         this.ladders.create(250, 704, 'ladder');
 		this.ladders.create(100, 604, 'ladder');
 		this.ladders.create(399, 604, 'ladder');
