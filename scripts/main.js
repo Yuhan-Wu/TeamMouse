@@ -13,8 +13,10 @@ function load()
 				debug: true
 			}
 		},
-		scene:[MenuScene,InitializationScene, ExampleScene, GameUI]
+		scene:[MenuScene,InitializationScene, ExampleScene, GameUI, GameOverScene],
+
 
 	};
 	var game = new Phaser.Game(config);
+
 }

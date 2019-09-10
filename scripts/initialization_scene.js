@@ -7,7 +7,6 @@ class InitializationScene extends Phaser.Scene{
 
     preload() {
         const progress = this.add.graphics();
-
         //load bar
         this.load.on('progress', (value) => {
             progress.clear();

@@ -9,7 +9,7 @@ class ExampleScene extends Phaser.Scene{
 	{
 		this.scene.launch('GameUI');
 		this.uiOverlay = this.scene.get('GameUI');
-
+		this.highScore = 0; //TODO: Add to high score whenever you jump over a cat (For Tuesday)
 	}
 
     create()
@@ -128,12 +128,18 @@ class ExampleScene extends Phaser.Scene{
 		else
 		{
 			this.mouse.isOnLadder = false;
-
 			this.mouse.snapTo = null;
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
 		this.uiOverlay.updateMouseLives(this.mouse.lives);
+		if (this.mouse.lives <= 0)
+		{
+			this.scene.launch('GameOverScene');
+			this.scene.pause();
+		}
+		this.uiOverlay.updateHighScore(this.highScore); //TODO: use the HighScore text class to store and update high score
     }
+
 	
 }

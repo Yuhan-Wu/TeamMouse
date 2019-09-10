@@ -6,8 +6,6 @@ class GameUI extends Phaser.Scene{
     }
 
     preload() {
-
-
     }
 
 
@@ -40,7 +38,8 @@ class GameUI extends Phaser.Scene{
 
         this.add.text(0, 0, '1UP', styleRedCenter);
         this.add.text(300, 0, 'HIGH SCORE', styleRedCenter);
-        this.livesText = this.add.text(300, 50, 'LIVES: ' + 0, styleWhiteCenter);
+        this.livesText = this.add.text(0, 45, 'LIVES: ' + 0, styleWhiteCenter);
+        this.highScoreText = this.add.text(300, 45, "", styleWhiteCenter);
 
     }
 
@@ -51,17 +50,12 @@ class GameUI extends Phaser.Scene{
 
     updateMouseLives(mouseLives)
     {
-        var styleWhiteCenter = {
-            fontFamily: 'ArcadeClassic',
-            fill: 'White',
-            fontSize: 'xx-large',
-            align: 'center',
-            fixedWidth: 200,
-        }
-
         this.livesText.setText('LIVES: ' + mouseLives);
+    }
 
-
+    updateHighScore(score)
+    {
+        this.highScoreText.setText(score);
     }
 
 
