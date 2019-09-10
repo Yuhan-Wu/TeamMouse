@@ -67,14 +67,10 @@ class ExampleScene extends Phaser.Scene{
 		plat.displayWidth = 350;
 		plat.displayHeight = 10;
 
-		plat = this.platforms.create(750, 460, 'ground');
+		plat = this.platforms.create(750, 560, 'ground');
 		plat.displayWidth = 150;
 		plat.displayHeight = 10;
-		
-		plat = this.platforms.create(750, 460, 'ground');
-		plat.displayWidth = 150;
-		plat.displayHeight = 10;
-		
+				
 		plat = this.platforms.create(215, 360, 'ground');
 		plat.displayWidth = 180;
 		plat.displayHeight = 10;
