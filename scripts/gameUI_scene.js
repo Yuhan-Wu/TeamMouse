@@ -56,12 +56,30 @@ class GameUI extends Phaser.Scene{
 
     updateMouseLives(mouseLives)
     {
-        if (mouseLives == 2)
-            this.life3.setVisible(false)
+        if (mouseLives == 3)
+        {
+            this.life1.setVisible(true);
+            this.life2.setVisible(true);
+            this.life3.setVisible(true);
+        }
+        else if (mouseLives == 2)
+        {
+            this.life1.setVisible(true);
+            this.life2.setVisible(true);
+            this.life3.setVisible(false);
+        }
         else if (mouseLives == 1)
-            this.life2.setVisible(false)
+        {
+            this.life1.setVisible(true);
+            this.life2.setVisible(false);
+            this.life3.setVisible(false);
+        }
         else if (mouseLives == 0)
-            this.life1.setVisible(false)
+        {
+            this.life1.setVisible(false);
+            this.life2.setVisible(false);
+            this.life3.setVisible(false);
+        }
         //this.livesText.setText('LIVES: ' + mouseLives);
     }
 
