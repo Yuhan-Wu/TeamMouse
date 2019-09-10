@@ -110,7 +110,7 @@ class ExampleScene extends Phaser.Scene{
 
         //Adds platforms to the level
         // this.platforms = this.physics.add.staticGroup();
-        this.addPlatformConfiguration(398,785,0,true,false,250,10,2);
+        this.addPlatformConfiguration(398,790,0,true,false,250,10,2);
         this.addPlatformConfiguration(100,660,1,false,true,350);
         this.addPlatformConfiguration(475,660,1,false,true,399);
         this.addPlatformConfiguration(250,560,2,false,true,249);
