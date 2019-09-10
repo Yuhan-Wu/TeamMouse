@@ -36,12 +36,8 @@ class ExampleScene extends Phaser.Scene{
             scale:1,
             story:0
         };
+        this.highestStory=6;
     }
-    constructor(config) {
-        super({key: 'ExampleScene'});
-
-
-	}
 
 	preload()
 	{
@@ -195,6 +191,7 @@ class ExampleScene extends Phaser.Scene{
 			this.mouse.climbOff();
 		}
         this.mouse.update(this.cursors);
+
         this.physics.overlap(this.cats,this.ladders,(cat,ladder)=>{
             // alert(2);
             // if(ladder.story==0){
@@ -205,7 +202,16 @@ class ExampleScene extends Phaser.Scene{
 		this.cats.forEach(function (cat) {
            cat.update();
         });
+        this.uiOverlay.updateMouseLives(this.mouse.lives);
+        //Win condition
+        if (this.mouse.currentStory ==this.highestStory)
+        {
+            //TODO: transition to the next level, play any animations
+            this.scene.launch('GameOverScene');
+            this.scene.pause();
+        }
 
+        this.uiOverlay.updateHighScore(this.highScore); //TODO: use a HighScore text class to store and update high score
     }
 
     enter_sematary(cat){
@@ -240,25 +246,6 @@ class ExampleScene extends Phaser.Scene{
         this.platform_configuration.scale=scale;
         let plat=new Platform(this.platform_configuration);
         this.platforms.add(plat);
-		this.uiOverlay.updateMouseLives(this.mouse.lives);
-
-		//Lose condition
-		if (this.mouse.lives <= 0)
-		{
-			this.scene.launch('GameOverScene');
-			this.scene.pause();
-		}
-
-		//Win condition
-		var highestPlat = 160;
-		if (this.mouse.y <= highestPlat - 30)
-		{
-			//TODO: transition to the next level, play any animations
-			this.scene.launch('GameOverScene');
-			this.scene.pause();
-		}
-
-		this.uiOverlay.updateHighScore(this.highScore); //TODO: use a HighScore text class to store and update high score
     }
 	
 }

@@ -22,7 +22,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 
         this.currentStory=0;
         this.left=true;
-s        this.live=3;
+        this.lives=3;
     }
 
     update(cursors) {
@@ -154,6 +154,10 @@ s        this.live=3;
 
     //Probably play a death animation
     die() {
+		//Lose condition
+
+		this.scene.launch('GameOverScene');
+		this.scene.pause();
         this.alive=false;
 		alert("YOU DIE");
     }
