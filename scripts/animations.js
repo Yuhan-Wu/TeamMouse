@@ -16,7 +16,7 @@ function animations(scene) {
 
     config = {
         key: 'rightStop',
-        frames: scene.anims.generateFrameNumbers('mouse', {prefix: 'walk/rightStop',start: 8, end: 8}),
+        frames: scene.anims.generateFrameNumbers('mouse', {prefix: 'walk/rightStop',start: 5, end: 5}),
         frameRate: 20
     };
     scene.anims.create(config);

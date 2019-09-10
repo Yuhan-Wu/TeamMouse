@@ -30,9 +30,6 @@ class ExampleScene extends Phaser.Scene{
 		this.ladders.create(649, 304, 'ladder');
 		this.ladders.create(300, 204, 'ladder');
 		this.ladders.create(500, 204, 'ladder');
-
-
-
 		
         Phaser.Actions.Call(this.ladders.getChildren(), function (ladder) {
             ladder.body.allowGravity = false;
@@ -117,16 +114,6 @@ class ExampleScene extends Phaser.Scene{
     update()
     {
 		let that = this;
-		if(this.physics.overlap(this.mouse,this.ladders, this.mouse.saveLadderPos))
-		{
-			this.mouse.isOnLadder = true;
-		}
-		else
-		{
-			this.mouse.isOnLadder = false;
-			this.mouse.snapTo = null;
-			this.mouse.climbOff();
-		}
         this.mouse.update(this.cursors);
 		this.uiOverlay.updateMouseLives(this.mouse.lives);
 
