@@ -6,9 +6,9 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         config.scene.physics.world.enable(this);
         config.scene.add.existing(this);
 		
-		this.StickToCeilingDuration = 2;
 		
 		//STATIC VARIABLES DON'T CHANGE OR ASSIGN TO THESE//
+		this.StickToCeilingDuration = 2000;
 		this.PlayerMovementVelocity = 80;
 		this.LadderClimbingVelocity = 80;
 		this.JumpVelocityY = 300;
@@ -42,6 +42,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//TODO REMOVE THIS
 		if(this.cursors.down.isDown && this.body.allowGravity == false && !this.isClimbing)
 		{
+			this.stickTimer.remove();
 			this.body.allowGravity = true;
 			this.isCeiling = false;
 		}
@@ -196,6 +197,15 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		if(this.body.touching.up)
 		{
 			this.resetSprite();
+			this.stickTimer = this.scene.time.delayedCall(this.StickToCeilingDuration, () =>{
+				console.log("UNSTICK");
+				if(this.isCeiling)
+				{
+					this.isCeiling = false;
+					this.body.allowGravity = true;
+				}
+			}, null, this);
+
 			this.body.velocity.x = 0;
 			this.isCeiling = true;
 			this.body.allowGravity = false;
