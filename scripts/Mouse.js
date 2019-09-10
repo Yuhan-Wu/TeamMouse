@@ -81,12 +81,12 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 			this.body.velocity.x = 0;
 			if (this.lastDir == null || this.lastDir === false)
 			{
-				this.anims.play('leftStop');
+				this.anims.play('rightStop');
 
 			}
 			else
 			{
-				this.anims.play('rightStop');
+				this.anims.play('leftStop');
 			}
 		}
 
@@ -120,6 +120,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		{
 			this.body.velocity.y = -150;
 		}
+        
 	}
 	
 	climbingMovement()
@@ -140,15 +141,15 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		}
 
 
-		if (this.lastDir == null || this.lastDir === false)
-		{
-			this.anims.play('leftStop');
+        if (this.lastDir == null || this.lastDir === false)
+        {
+            this.anims.play('rightStop');
 
-		}
-		else
-		{
-			this.anims.play('rightStop');
-		}
+        }
+        else
+        {
+            this.anims.play('leftStop');
+        }
 	}
 
     attack(weapon,enemy){
