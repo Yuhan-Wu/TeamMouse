@@ -5,6 +5,14 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         super(config.scene, config.x, config.y, config.key);
         config.scene.physics.world.enable(this);
         config.scene.add.existing(this);
+		
+		this.StickToCeilingDuration = 2;
+		
+		//STATIC VARIABLES DON'T CHANGE OR ASSIGN TO THESE//
+		this.PlayerMovementVelocity = 80;
+		this.LadderClimbingVelocity = 80;
+		this.JumpVelocityY = 300;
+		
 
         this.original_x=config.x;
         this.original_y=config.y;
@@ -15,6 +23,8 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		this.lastPosition = 0;
 		this.snapTo = null;
 		this.isCeiling = false;
+		this.stickTimer;
+
 		
 		this.originalWidth = 50;
 		this.body.setSize(this.originalWidth + 2, this.body.height);
@@ -59,14 +69,14 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         if (this.cursors.left.isDown)
 		{
 			this.lastDir = true;
-			this.body.velocity.x = -80;
+			this.body.velocity.x = -1 * this.PlayerMovementVelocity;
 			this.left=true;
 			this.anims.play('left', true);
 		}
 		else if (this.cursors.right.isDown)
 		{
 			this.lastDir = false;
-			this.body.velocity.x = 80;
+			this.body.velocity.x = this.PlayerMovementVelocity;
 			this.left=false;
 			this.anims.play('right', true);
 		}
@@ -90,7 +100,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 				}
 				else
 				{
-					this.body.velocity.y = -300;
+					this.body.velocity.y = -1 * this.JumpVelocityY;
 				}
 				this.body.position.y += 2;
 			}
@@ -104,7 +114,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		//Otherwise, we can jump
 		else if(this.cursors.up.isDown && this.body.touching.down && this.body.velocity.y == 0)
 		{
-			this.body.velocity.y = -300;
+			this.body.velocity.y = -1 * this.JumpVelocityY;
 		}
         
 	}
@@ -115,11 +125,11 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 		this.body.setSize(this.originalWidth, this.body.height);
 		if(this.cursors.up.isDown)
 		{
-			this.body.velocity.y = -80;
+			this.body.velocity.y = -1 * this.PlayerMovementVelocity;
 		}
 		else if(this.cursors.down.isDown)
 		{
-			this.body.velocity.y = 80;
+			this.body.velocity.y = this.PlayerMovementVelocity;
 		}
 		else if(!this.cursors.down.isDown && !this.cursors.up.isDown)
 		{		
