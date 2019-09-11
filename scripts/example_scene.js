@@ -134,7 +134,7 @@ class ExampleScene extends Phaser.Scene{
 
 		this.physics.add.collider(this.mouse,this.platforms, (mouse,platform) =>
 	    {
-			mouse.hangOut();
+			mouse.hangOut(platform);
 			mouse.climbOff();
 			mouse.currentStory=platform.story;
 		});
