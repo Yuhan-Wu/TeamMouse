@@ -40,7 +40,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
         this.checkLadderStatus();
 		
 		//TODO REMOVE THIS
-		if(this.cursors.down.isDown && this.body.allowGravity == false && !this.isClimbing)
+		if(this.cursors.up.isUp && this.body.allowGravity == false && !this.isClimbing)
 		{
 			this.stickTimer.remove();
 			this.body.allowGravity = true;
@@ -194,7 +194,7 @@ class Mouse extends Phaser.Physics.Arcade.Sprite {
 	
 	hangOut()
 	{
-		if(this.body.touching.up)
+		if(this.body.touching.up && this.cursors.up.isDown)
 		{
 			this.resetSprite();
 			this.stickTimer = this.scene.time.delayedCall(this.StickToCeilingDuration, () =>{
